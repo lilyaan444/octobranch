@@ -6,24 +6,24 @@
   "permissions": ["activeTab", "storage"],
   "host_permissions": ["https://github.com/*", "https://api.github.com/*"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
       "matches": ["https://github.com/*"],
-      "js": ["content.js"],
-      "css": ["styles.css"]
+      "js": ["src/content.js"],
+      "css": ["src/styles/styles.css"]
     }
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_icon": {
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "48": "src/icons/icon48.png",
+      "128": "src/icons/icon128.png"
     }
   },
   "icons": {
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
   }
 }

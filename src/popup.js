@@ -1,5 +1,6 @@
 // État global pour la fenêtre d'authentification
 let authWindow = null;
+let isFetching = false;
 
 // Fonction pour gérer la connexion
 function handleLogin() {
@@ -93,6 +94,9 @@ function handleLogout() {
 
 // Charger les commits pour la page actuelle
 async function loadCommits() {
+  if (isFetching) return; // Ne pas exécuter si une requête est déjà en cours
+  isFetching = true; // Indiquer qu'une requête est en cours
+
   try {
     const token = await new Promise((resolve) => {
       chrome.storage.local.get("github_access_token", (data) => {
@@ -114,7 +118,15 @@ async function loadCommits() {
       const repo = pathParts[2];
 
       const response = await fetch(
-        `https://octobranch-server.onrender.com/repo/${owner}/${repo}/commits?access_token=${token}`
+        `https://octobranch-server.onrender.com/repo/${owner}/${repo}/commits?access_token=${token}`,
+        {
+          method: "GET",
+          headers: {
+            "Cache-Control": "no-cache", // Désactiver le cache
+            Pragma: "no-cache", // Pour les anciens navigateurs
+            Expires: "0", // Expiration immédiate
+          },
+        }
       );
 
       if (!response.ok) throw new Error("Fetch failed");
@@ -124,6 +136,8 @@ async function loadCommits() {
     }
   } catch (error) {
     console.error("Error loading commits:", error);
+  } finally {
+    isFetching = false; // Réinitialiser le drapeau une fois la requête terminée
   }
 }
 
@@ -142,3 +156,20 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("logout-button")
     .addEventListener("click", handleLogout);
 });
+
+function listenToNavigation() {
+  let lastUrl = location.href;
+
+  new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      removeCommitsDisplay();
+      loadCommits(); // Appel à loadCommits
+    }
+  }).observe(document.querySelector("title"), {
+    subtree: true,
+    characterData: true,
+    childList: true,
+  });
+}

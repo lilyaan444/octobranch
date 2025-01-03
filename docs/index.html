@@ -1,33 +1,306 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OctoBranch</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>OctoBranch - Visualisez vos branches GitHub</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- AOS CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
+    <style>
+      .gradient-bg {
+        background: linear-gradient(120deg, #1a365d 0%, #2563eb 100%);
+      }
+      .card {
+        backdrop-filter: blur(16px) saturate(180%);
+        background-color: rgba(255, 255, 255, 0.75);
+      }
+    </style>
   </head>
-  <body>
-    <header>
-      <img src="images/logo.png" alt="OctoBranch Logo" class="logo" />
-      <h1>OctoBranch</h1>
-      <p>
-        Visualisez rapidement les derniers commits de toutes les branches d'un
-        dépôt GitHub.
-      </p>
+  <body class="bg-gray-50">
+    <nav
+      class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <img
+              src="images/download.png"
+              alt="OctoBranch Logo"
+              class="h-10 w-10"
+            />
+            <span class="ml-2 text-xl font-bold text-gray-900">OctoBranch</span>
+          </div>
+          <div class="hidden md:flex items-center space-x-4">
+            <a
+              href="#features"
+              class="text-gray-700 hover:text-blue-600 transition"
+              >Fonctionnalités</a
+            >
+            <a
+              href="https://github.com/lilyaan444/octobranch"
+              class="text-gray-700 hover:text-blue-600 transition"
+              >GitHub</a
+            >
+            <a
+              href="#contact"
+              class="text-gray-700 hover:text-blue-600 transition"
+              >Contact</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header class="gradient-bg pt-32 pb-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1
+            class="text-4xl md:text-6xl font-bold text-white mb-6"
+            data-aos="fade-up"
+          >
+            Visualisez vos branches GitHub
+            <span class="block text-blue-200">comme jamais auparavant</span>
+          </h1>
+          <p
+            class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            Gardez un œil sur tous vos commits et branches en temps réel avec
+            notre extension Chrome intuitive
+          </p>
+          <div data-aos="fade-up" data-aos-delay="200">
+            <a
+              href="https://chrome.google.com/webstore/detail/octobranch/[extension-id]"
+              class="inline-flex items-center px-8 py-3 rounded-lg bg-white text-blue-600 font-semibold hover:bg-blue-50 transition transform hover:-translate-y-1"
+            >
+              <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+                />
+              </svg>
+              Installer l'extension
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16">
+        <img
+          src="images/screen.png"
+          alt="Aperçu de l'extension"
+          class="max-w-4xl mx-auto rounded-lg shadow-2xl"
+          data-aos="zoom-in"
+        />
+      </div>
     </header>
 
     <main>
-      <a
-        href="https://chrome.google.com/webstore/detail/octobranch/[extension-id]"
-        class="btn"
-        >Installer sur Chrome</a
-      >
+      <section id="features" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            class="text-3xl font-bold text-center text-gray-900 mb-12"
+            data-aos="fade-up"
+          >
+            Fonctionnalités principales
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="card p-6 rounded-xl shadow-lg" data-aos="fade-up">
+              <div
+                class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg
+                  class="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Vue d'ensemble rapide
+              </h3>
+              <p class="text-gray-600">
+                Visualisez instantanément l'état de toutes vos branches et leurs
+                derniers commits.
+              </p>
+            </div>
+            <div
+              class="card p-6 rounded-xl shadow-lg"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div
+                class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg
+                  class="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Temps réel
+              </h3>
+              <p class="text-gray-600">
+                Mises à jour automatiques en temps réel dès qu'un nouveau commit
+                est poussé.
+              </p>
+            </div>
+            <div
+              class="card p-6 rounded-xl shadow-lg"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div
+                class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg
+                  class="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Personnalisable
+              </h3>
+              <p class="text-gray-600">
+                Configurez l'affichage selon vos préférences et votre workflow.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-gray-100 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900" data-aos="fade-up">
+              Comment ça marche ?
+            </h2>
+          </div>
+          <div class="grid md:grid-cols-4 gap-8 text-center">
+            <div data-aos="fade-up">
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4"
+              >
+                1
+              </div>
+              <h3 class="font-semibold mb-2">Installez l'extension</h3>
+              <p class="text-gray-600">Depuis le Chrome Web Store en un clic</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="100">
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4"
+              >
+                2
+              </div>
+              <h3 class="font-semibold mb-2">Connectez GitHub</h3>
+              <p class="text-gray-600">
+                Authentifiez-vous avec votre compte GitHub
+              </p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="200">
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4"
+              >
+                3
+              </div>
+              <h3 class="font-semibold mb-2">Sélectionnez un dépôt</h3>
+              <p class="text-gray-600">Choisissez le dépôt à surveiller</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="300">
+              <div
+                class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4"
+              >
+                4
+              </div>
+              <h3 class="font-semibold mb-2">C'est parti !</h3>
+              <p class="text-gray-600">
+                Profitez d'une vue claire de vos branches
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer>
-      <p>Créé par Lilyan Muller</p>
-      <p><a href="mailto:votre.email@example.com">Contactez-moi</a></p>
-      <p>© 2025 OctoBranch</p>
+    <footer class="bg-gray-900 text-gray-300 py-12" id="contact">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-xl font-bold text-white mb-4">OctoBranch</h3>
+            <p class="text-gray-400">
+              Simplifiez la gestion de vos branches GitHub
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-4">Contact</h3>
+            <a
+              href="mailto:mullerlilyan@proton.me"
+              class="text-gray-400 hover:text-white transition"
+              >mullerlilyan@proton.me</a
+            >
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-4">Liens</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="https://github.com/lilyaan444/octobranch"
+                  class="text-gray-400 hover:text-white transition"
+                  >GitHub</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Documentation</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-gray-800 text-center">
+          <p>© 2025 OctoBranch. Créé par Lilyan Muller</p>
+        </div>
+      </div>
     </footer>
+
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        AOS.init({
+          duration: 800,
+          once: true,
+        });
+      });
+    </script>
   </body>
 </html>
