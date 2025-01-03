@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/popup.css" />
     <title>OctoBranch</title>
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>OctoBranch</h1>
+    <div class="header">
+      <h1>OctoBranch</h1>
+      <span id="status" class="status"></span>
+    </div>
+
     <button id="login-button">Se connecter avec GitHub</button>
-    <p id="status"></p>
+    <button id="logout-button" style="display: none">Se déconnecter</button>
+
+    <div id="commits-container" class="commits-container" style="display: none">
+      <div id="commits-list"></div>
+    </div>
+
     <script src="popup.js"></script>
   </body>
 </html>

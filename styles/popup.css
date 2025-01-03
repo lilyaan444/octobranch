@@ -1,13 +1,288 @@
-body {
-  font-family: Arial, sans-serif;
-  padding: 10px;
-  background-color: #f9f9f9;
+/* Réinitialisation et styles de base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-button {
-  background-color: #0366d6;
+body {
+  width: 400px;
+  min-height: 300px;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #24292f;
+  background-color: #f6f8fa;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Effet de grain */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+/* En-tête */
+.header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(208, 215, 222, 0.48);
+  backdrop-filter: blur(8px);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #2da44e 0%, #1a7f37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+/* Statut */
+.status {
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.status::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  filter: blur(4px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.status-connected {
+  background: linear-gradient(135deg, #2ea043 0%, #1f7f3f 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(46, 160, 67, 0.2);
+}
+
+.status-disconnected {
+  background: linear-gradient(135deg, #cf222e 0%, #a0111b 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(207, 34, 46, 0.2);
+}
+
+/* Boutons */
+button {
+  position: relative;
+  width: 100%;
+  padding: 12px 20px;
   border: none;
-  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  z-index: 2;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+button:hover::before {
+  opacity: 1;
+}
+
+#login-button {
+  background: linear-gradient(135deg, #2ea043 0%, #1f7f3f 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(46, 160, 67, 0.2);
+}
+
+#login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 160, 67, 0.3);
+}
+
+#logout-button {
+  background: linear-gradient(135deg, #cf222e 0%, #a0111b 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(207, 34, 46, 0.2);
+}
+
+#logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(207, 34, 46, 0.3);
+}
+
+/* Container des commits */
+.commits-container {
+  margin-top: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.commits-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.commits-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.commits-list::-webkit-scrollbar-track {
+  background: rgba(208, 215, 222, 0.2);
+  border-radius: 4px;
+}
+
+.commits-list::-webkit-scrollbar-thumb {
+  background: rgba(110, 118, 129, 0.4);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.commits-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(110, 118, 129, 0.6);
+}
+
+/* Items des branches */
+.branch-item {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid rgba(208, 215, 222, 0.48);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.branch-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: rgba(208, 215, 222, 0.8);
+}
+
+.branch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.branch-name {
+  font-weight: 600;
+  color: #0969da;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.branch-name::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230969da'%3E%3Cpath d='M11.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122V6A2.5 2.5 0 0110 8.5H6a1 1 0 00-1 1v1.128a2.251 2.251 0 11-1.5 0V5.372a2.25 2.25 0 111.5 0v1.836A2.492 2.492 0 016 7h4a1 1 0 001-1v-.628A2.25 2.25 0 019.5 3.25zM4.25 12a.75.75 0 100 1.5.75.75 0 000-1.5zM3.5 3.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.commit-date {
+  color: #57606a;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.commit-message {
+  margin: 8px 0;
+  color: #24292f;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.commit-author {
+  display: flex;
+  align-items: center;
+  color: #57606a;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.author-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.commits-container {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.branch-item {
+  animation: fadeIn 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.branch-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.branch-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.branch-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.branch-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.branch-item:nth-child(5) {
+  animation-delay: 0.5s;
 }
