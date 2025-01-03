@@ -2,8 +2,6 @@
 
 ### Visualisez rapidement les derniers commits de toutes les branches d'un dépôt GitHub
 
-![OctoBranch Logo](https://via.placeholder.com/150)
-
 ---
 
 ## 🌟 Description
