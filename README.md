@@ -60,7 +60,6 @@
    ```bash
    npm install
    ```
-   ```
 
 3. Testez et développez l'extension directement dans Chrome.
 
