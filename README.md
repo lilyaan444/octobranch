@@ -101,6 +101,11 @@ Pour toute question ou suggestion :
 - **GitHub** : [Votre GitHub](https://github.com/lilyaan444)
 
 ---
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
 
 
 ### 📝 À venir
