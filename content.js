@@ -17,82 +17,75 @@ function removeCommitsDisplay() {
 function displayCommits(commits) {
   removeCommitsDisplay();
 
-  const repoHeader = document.querySelector(".repository-content");
-  if (!repoHeader) return;
+  const sidebar = document.querySelector(".Layout-sidebar");
+  if (!sidebar) return;
+
+  const borderGrid = sidebar.querySelector(".BorderGrid");
+  if (!borderGrid) return;
 
   const commitsContainer = document.createElement("div");
-  commitsContainer.className = "octobranch-commits Box mt-3";
+  commitsContainer.className = "octobranch-commits";
 
-  const headerDiv = document.createElement("div");
-  headerDiv.className = "Box-header";
-  headerDiv.innerHTML = `
-    <h2 class="Box-title">
-      <svg class="octicon mr-2" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
-        <path d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z"></path>
-      </svg>
-      Derniers commits par branche
-    </h2>
-  `;
-  commitsContainer.appendChild(headerDiv);
-
-  const commitsListDiv = document.createElement("div");
-  commitsListDiv.className = "Box-body";
-
-  commits.forEach((branch, index) => {
-    const branchDiv = document.createElement("div");
-    branchDiv.className = `d-flex flex-items-start ${
-      index !== 0 ? "border-top pt-3 mt-3" : ""
-    }`;
-
-    const commit = branch.commit;
-    const date = new Date(commit.commit.author.date).toLocaleDateString(
-      "fr-FR",
-      {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }
-    );
-    const timeAgo = timeSince(new Date(commit.commit.author.date));
-    const shortSha = commit.sha.substring(0, 7);
-
-    branchDiv.innerHTML = `
-      <div class="flex-auto">
-        <div class="d-flex flex-items-center mb-1">
-          <svg class="octicon mr-2" viewBox="0 0 16 16" width="16" height="16" fill="#57606a">
-            <path d="M11.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122V6A2.5 2.5 0 019 8.5v2H7.75V14a.75.75 0 01-1.5 0V10.5H5A2.5 2.5 0 012.5 8V6a2.25 2.25 0 113 2.122V8.5a1 1 0 001 1h5a1 1 0 001-1V6a2.25 2.25 0 11.75-1.75zM8 8.5a.75.75 0 100 1.5.75.75 0 000-1.5zM5.75 6.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.5 6.75a.75.75 0 100-1.5.75.75 0 000 1.5zm2.75 0a.75.75 0 100-1.5.75.75 0 000 1.5z"></path>
-          </svg>
-          <span class="text-bold Link--primary mr-2">${branch.branch}</span>
-          <span class="Label Label--secondary mr-1">dernier commit</span>
+  commitsContainer.innerHTML = `
+    <div class="BorderGrid-row">
+      <div class="BorderGrid-cell">
+        <div class="commits-header">
+          <h2>
+            <svg class="octicon" height="16" viewBox="0 0 16 16" width="16">
+              <path fill="currentColor" d="M1.643 3.143.427 1.927A.25.25 0 0 0 0 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 0 0 .177-.427L2.715 4.215a6.5 6.5 0 1 1-1.18 4.458.75.75 0 1 0-1.493.154 8.001 8.001 0 1 0 1.6-5.684ZM7.75 4a.75.75 0 0 1 .75.75v2.992l2.028.812a.75.75 0 0 1-.557 1.392l-2.5-1A.75.75 0 0 1 7 8.25v-3.5A.75.75 0 0 1 7.75 4Z"></path>
+            </svg>
+            Derniers commits par branche
+          </h2>
         </div>
-        <div class="commit-message markdown-title">
-          ${commit.commit.message}
-        </div>
-        <div class="text-small color-fg-muted mt-1">
-          <a href="${
-            commit.html_url
-          }" class="Link--secondary mr-2" target="_blank">${shortSha}</a>
-          <a href="${
-            commit.author ? commit.author.html_url : "#"
-          }" class="Link--secondary mr-2" target="_blank">
-            <img src="${
-              commit.author ? commit.author.avatar_url : ""
-            }" class="avatar avatar-user" width="20" height="20" alt="${
-      commit.commit.author.name
-    }">
-            ${commit.commit.author.name}
-          </a>
-          <span>commis le ${date} (${timeAgo})</span>
+        
+        <div class="branch-commits-list">
+          ${commits
+            .map(
+              (branch) => `
+            <div class="branch-commit-item">
+              <div class="branch-name">
+                <svg class="octicon" height="16" viewBox="0 0 16 16" width="16">
+                  <path fill="currentColor" d="M11.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm-2.25.75a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 9 8.5v2H7.75V14a.75.75 0 0 1-1.5 0v-3.5H5A2.5 2.5 0 0 1 2.5 8V6a2.25 2.25 0 1 1 3 2.122V8.5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V6a2.25 2.25 0 1 1 .75-1.75ZM8 8.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM5.75 6.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm2.75 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm2.75 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"></path>
+                </svg>
+                <span class="truncate-text">${branch.branch}</span>
+              </div>
+              
+              <a class="commit-message" href="${
+                branch.commit.html_url
+              }" title="${branch.commit.commit.message}">
+                ${branch.commit.commit.message}
+              </a>
+              
+              <div class="commit-meta">
+                <a class="commit-author" href="${
+                  branch.commit.author?.html_url || "#"
+                }" title="${branch.commit.commit.author.name}">
+                  <img class="avatar-user" src="${
+                    branch.commit.author?.avatar_url || "/api/placeholder/20/20"
+                  }" alt="${branch.commit.commit.author.name}">
+                  <span class="truncate-text">${
+                    branch.commit.commit.author.name
+                  }</span>
+                </a>
+                <span>${timeSince(
+                  new Date(branch.commit.commit.author.date)
+                )}</span>
+              </div>
+            </div>
+          `
+            )
+            .join("")}
         </div>
       </div>
-    `;
+    </div>
+  `;
 
-    commitsListDiv.appendChild(branchDiv);
-  });
-
-  commitsContainer.appendChild(commitsListDiv);
-  repoHeader.prepend(commitsContainer);
+  const firstRow = borderGrid.querySelector(".BorderGrid-row");
+  if (firstRow) {
+    firstRow.after(commitsContainer);
+  } else {
+    borderGrid.appendChild(commitsContainer);
+  }
 }
 
 // Calculer le temps écoulé depuis une date

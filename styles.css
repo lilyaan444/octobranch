@@ -1,138 +1,178 @@
-/* General container styles */
-.octobranch-commits {
-  background-color: #ffffff;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-    sans-serif;
-  margin-bottom: 16px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.octobranch-commits .BorderGrid-cell {
+  border: none !important;
+  display: table-cell;
 }
 
-/* Header styling */
-.octobranch-commits .Box-header {
-  background-color: #f3f4f6;
-  padding: 8px 16px;
-  border-bottom: 1px solid #d0d7de;
+/* Variables pour les thèmes */
+:root {
+  --bg-light: #ffffff;
+  --text-light: #24292f;
+  --border-light: #d0d7de;
+  --hover-light: #f6f8fa;
+  --link-light: #0969da;
+  --shadow-light: rgba(31, 35, 40, 0.04);
+
+  --bg-dark: #0d1117;
+  --text-dark: #c9d1d9;
+  --border-dark: #30363d;
+  --hover-dark: #161b22;
+  --link-dark: #58a6ff;
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+}
+
+/* Styles de base */
+.octobranch-commits {
+  margin: 16px 0;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.commits-header {
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+
+.commits-header h2 {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.octobranch-commits .Box-title {
+  gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #24292e;
-  margin: 0;
+}
+
+.branch-commits-list {
   display: flex;
-  align-items: center;
-}
-
-.octobranch-commits .Box-title svg {
-  margin-right: 6px;
-  fill: #57606a;
-}
-
-/* Commit list styles */
-.octobranch-commits .Box-body {
-  padding: 8px 16px;
-}
-
-.octobranch-commits .Box-body .d-flex {
-  padding: 8px 0;
-  display: flex;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 12px;
 }
 
-.octobranch-commits .Box-body .d-flex:hover {
-  background-color: #f9f9f9;
+.branch-commit-item {
+  padding: 12px;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-/* Commit details */
-.octobranch-commits .d-flex .text-bold {
-  font-size: 12px;
-  color: #0366d6;
-  margin-right: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Mode clair */
+@media (prefers-color-scheme: light) {
+  .branch-commit-item {
+    background: var(--bg-light);
+    box-shadow: 0 1px 3px var(--shadow-light);
+  }
+
+  .branch-commit-item:hover {
+    background: var(--hover-light);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px var(--shadow-light);
+  }
 }
 
-.octobranch-commits .d-flex .Label {
-  font-size: 10px;
-  background-color: #eff3f6;
-  color: #57606a;
-  padding: 2px 8px;
-  border-radius: 12px;
+/* Mode sombre */
+@media (prefers-color-scheme: dark) {
+  .branch-commit-item {
+    background: var(--bg-dark);
+    border-color: var(--border-dark);
+    box-shadow: 0 1px 3px var(--shadow-dark);
+  }
+
+  .branch-commit-item:hover {
+    background: var(--hover-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px var(--shadow-dark);
+  }
 }
 
-.octobranch-commits .commit-message {
-  font-size: 12px;
-  color: #24292e;
-  margin: 4px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.octobranch-commits .text-small {
-  font-size: 10px;
-  color: #6a737d;
+.branch-name {
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 12px;
+  margin-bottom: 8px;
 }
 
-.octobranch-commits .text-small .avatar {
-  border-radius: 50%;
+.commit-message {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 8px 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.commit-message:hover {
+  color: var(--link-light);
+  text-decoration: underline;
+}
+
+.commit-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.commit-author {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.commit-author:hover {
+  color: var(--link-light);
+}
+
+.avatar-user {
   width: 20px;
   height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.octobranch-commits .text-small a {
-  color: #0366d6;
-  text-decoration: none;
-  transition: color 0.2s ease;
+.truncate-text {
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.octobranch-commits .text-small a:hover {
-  color: #0056b3;
+/* Animations des icônes */
+.octicon {
+  transition: transform 0.2s ease;
 }
 
-/* Border between commits */
-.octobranch-commits .border-top {
-  border-top: 1px solid #d0d7de;
+.branch-commit-item:hover .octicon {
+  transform: scale(1.1);
 }
 
-/* Compact adjustments for responsiveness */
-@media (max-width: 768px) {
-  .octobranch-commits {
-    max-width: 100%;
-  }
+/* Style personnalisé pour la scrollbar */
+.branch-commits-list::-webkit-scrollbar {
+  width: 8px;
+}
 
-  .octobranch-commits .Box-body {
-    padding: 8px;
-  }
+.branch-commits-list::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  .octobranch-commits .d-flex {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+.branch-commits-list::-webkit-scrollbar-thumb {
+  background-color: var(--border-light);
+  border-radius: 4px;
+}
 
-  .octobranch-commits .text-small {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .octobranch-commits .text-small .avatar {
-    margin-bottom: 4px;
+@media (prefers-color-scheme: dark) {
+  .branch-commits-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-dark);
   }
 }
