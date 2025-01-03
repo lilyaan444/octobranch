@@ -3,21 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/popup.css" />
     <title>OctoBranch</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/popup.css" />
   </head>
   <body>
     <div class="header">
       <h1>OctoBranch</h1>
-      <span id="status" class="status"></span>
+      <span id="status" class="status">Connecté à GitHub</span>
     </div>
 
-    <button id="login-button">Se connecter avec GitHub</button>
-    <button id="logout-button" style="display: none">Se déconnecter</button>
-
-    <div id="commits-container" class="commits-container" style="display: none">
-      <div id="commits-list"></div>
+    <div class="flex flex-col items-center gap-4 mt-8">
+      <button id="login-button" class="transition-transform">
+        Se connecter avec GitHub
+      </button>
+      <button id="logout-button" class="hidden">Se déconnecter</button>
     </div>
+
+    <footer class="mt-auto text-center text-xs text-gray-500">
+      &copy; 2025 OctoBranch
+    </footer>
 
     <script src="popup.js"></script>
   </body>
