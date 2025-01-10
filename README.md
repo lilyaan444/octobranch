@@ -5,6 +5,7 @@
 ---
 
 ## 🌟 Description
+
 **OctoBranch** est une extension Chrome conçue pour améliorer votre expérience GitHub. Grâce à OctoBranch, vous pouvez :
 
 - Voir rapidement les derniers commits de toutes les branches d'un dépôt GitHub sans avoir à naviguer manuellement.
@@ -19,18 +20,20 @@
 - **Affichage automatique des derniers commits de toutes les branches sur la page d'un dépôt**
 - **Conservation du design natif de GitHub** pour une expérience utilisateur fluide
 - **Paramètres personnalisables** via une interface popup intuitive
-- **Serveur proxy** Pour une authentification sécurisé 
+- **Serveur proxy** Pour une authentification sécurisé
 
 ---
 
 ## 📦 Installation
 
 1. Clonez ce dépôt :
+
    ```bash
    git clone https://github.com/votre-utilisateur/octobranch.git
    ```
 
 2. Ouvrez Google Chrome et accédez à :
+
    ```
    chrome://extensions/
    ```
@@ -57,11 +60,12 @@
 ## 🛠️ Développement
 
 1. Installez les dépendances nécessaires si applicable :
+
    ```bash
    npm install
    ```
 
-3. Testez et développez l'extension directement dans Chrome.
+2. Testez et développez l'extension directement dans Chrome.
 
 ---
 
@@ -101,12 +105,13 @@ Pour toute question ou suggestion :
 - **GitHub** : [Votre GitHub](https://github.com/lilyaan444)
 
 ---
+
 ## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ---
 
-
 ### 📝 À venir
+
 - **Support Firefox**

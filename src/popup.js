@@ -1,8 +1,6 @@
-// État global pour la fenêtre d'authentification
 let authWindow = null;
 let isFetching = false;
 
-// Fonction pour gérer la connexion
 function handleLogin() {
   const width = 800;
   const height = 600;
@@ -15,26 +13,20 @@ function handleLogin() {
     `width=${width},height=${height},left=${left},top=${top}`
   );
 
-  // Écouter le message de la fenêtre d'authentification
   window.addEventListener("message", handleAuthMessage);
 }
 
-// Gérer le message reçu de la fenêtre d'authentification
 function handleAuthMessage(event) {
-  // Vérifier l'origine pour la sécurité
   if (event.origin !== "https://octobranch-server.onrender.com") return;
 
   if (event.data.type === "GITHUB_AUTH_SUCCESS" && event.data.token) {
-    // Stocker le token
     chrome.storage.local.set(
       {
         github_access_token: event.data.token,
       },
       () => {
-        // Mettre à jour l'interface
         updateUI(true);
 
-        // Informer content.js
         chrome.tabs.query(
           { active: true, currentWindow: true },
           function (tabs) {
@@ -48,12 +40,10 @@ function handleAuthMessage(event) {
       }
     );
 
-    // Retirer l'écouteur d'événements
     window.removeEventListener("message", handleAuthMessage);
   }
 }
 
-// Mettre à jour l'interface utilisateur
 function updateUI(isAuthenticated) {
   const loginButton = document.getElementById("login-button");
   const logoutButton = document.getElementById("logout-button");
@@ -76,12 +66,10 @@ function updateUI(isAuthenticated) {
   }
 }
 
-// Gérer la déconnexion
 function handleLogout() {
   chrome.storage.local.remove("github_access_token", () => {
     updateUI(false);
 
-    // Informer content.js
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       if (tabs[0] && tabs[0].id) {
         chrome.tabs
@@ -92,10 +80,9 @@ function handleLogout() {
   });
 }
 
-// Charger les commits pour la page actuelle
 async function loadCommits() {
-  if (isFetching) return; // Ne pas exécuter si une requête est déjà en cours
-  isFetching = true; // Indiquer qu'une requête est en cours
+  if (isFetching) return;
+  isFetching = true;
 
   try {
     const token = await new Promise((resolve) => {
@@ -122,9 +109,9 @@ async function loadCommits() {
         {
           method: "GET",
           headers: {
-            "Cache-Control": "no-cache", // Désactiver le cache
-            Pragma: "no-cache", // Pour les anciens navigateurs
-            Expires: "0", // Expiration immédiate
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+            Expires: "0",
           },
         }
       );
@@ -137,18 +124,15 @@ async function loadCommits() {
   } catch (error) {
     console.error("Error loading commits:", error);
   } finally {
-    isFetching = false; // Réinitialiser le drapeau une fois la requête terminée
+    isFetching = false;
   }
 }
 
-// Initialisation
 document.addEventListener("DOMContentLoaded", () => {
-  // Vérifier l'état de l'authentification
   chrome.storage.local.get("github_access_token", (data) => {
     updateUI(!!data.github_access_token);
   });
 
-  // Ajouter les écouteurs d'événements
   document
     .getElementById("login-button")
     .addEventListener("click", handleLogin);
@@ -165,7 +149,7 @@ function listenToNavigation() {
     if (url !== lastUrl) {
       lastUrl = url;
       removeCommitsDisplay();
-      loadCommits(); // Appel à loadCommits
+      loadCommits();
     }
   }).observe(document.querySelector("title"), {
     subtree: true,

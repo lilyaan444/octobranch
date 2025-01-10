@@ -1,11 +1,9 @@
-// Écouter les messages de la popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "LOGOUT") {
     removeCommitsDisplay();
   }
 });
 
-// Retirer l'affichage des commits
 function removeCommitsDisplay() {
   const container = document.querySelector(".octobranch-commits");
   if (container) {
@@ -13,7 +11,6 @@ function removeCommitsDisplay() {
   }
 }
 
-// Afficher les commits de manière stylisée
 function displayCommits(commits) {
   removeCommitsDisplay();
 
@@ -88,7 +85,6 @@ function displayCommits(commits) {
   }
 }
 
-// Calculer le temps écoulé depuis une date
 function timeSince(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
   let interval = seconds / 31536000;
@@ -115,13 +111,32 @@ function timeSince(date) {
   return `${Math.floor(seconds)} secondes`;
 }
 
-// Récupérer les commits avec le jeton d'accès
+let isLoadingCommits = false;
+let loadingTimeout = null;
+
+function debounce(func, wait) {
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(loadingTimeout);
+      func(...args);
+    };
+    clearTimeout(loadingTimeout);
+    loadingTimeout = setTimeout(later, wait);
+  };
+}
+
 async function fetchCommits() {
+  if (isLoadingCommits) return;
+
   try {
+    isLoadingCommits = true;
     const data = await chrome.storage.local.get("github_access_token");
     const accessToken = data.github_access_token;
 
-    if (!accessToken) return;
+    if (!accessToken) {
+      isLoadingCommits = false;
+      return;
+    }
 
     const repoUrl = window.location.pathname.split("/");
     if (repoUrl.length >= 3 && repoUrl[1] && repoUrl[2]) {
@@ -137,11 +152,14 @@ async function fetchCommits() {
       }
 
       const commits = await response.json();
-      displayCommits(commits);
+
+      const existingDisplay = document.querySelector(".octobranch-commits");
+      if (!existingDisplay) {
+        displayCommits(commits);
+      }
     }
   } catch (error) {
     console.error("Error fetching commits:", error);
-    // Optionnel: Afficher une notification d'erreur à l'utilisateur
     const errorDiv = document.createElement("div");
     errorDiv.className = "flash flash-error mt-3";
     errorDiv.textContent =
@@ -149,23 +167,22 @@ async function fetchCommits() {
     const repoHeader = document.querySelector(".repository-content");
     if (repoHeader) {
       repoHeader.prepend(errorDiv);
-      setTimeout(() => errorDiv.remove(), 5000); // Retire la notification après 5 secondes
+      setTimeout(() => errorDiv.remove(), 5000);
     }
+  } finally {
+    isLoadingCommits = false;
   }
 }
 
-// Observer les changements dans le DOM pour les pages dynamiques
+const debouncedFetchCommits = debounce(fetchCommits, 300);
+
 function initObserver() {
   const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      if (
-        mutation.type === "childList" &&
-        document.querySelector(".repository-content") &&
-        !document.querySelector(".octobranch-commits")
-      ) {
-        fetchCommits();
-        break;
-      }
+    if (
+      document.querySelector(".repository-content") &&
+      !document.querySelector(".octobranch-commits")
+    ) {
+      debouncedFetchCommits();
     }
   });
 
@@ -175,7 +192,6 @@ function initObserver() {
   });
 }
 
-// Écouter les événements de navigation
 function listenToNavigation() {
   let lastUrl = location.href;
 
@@ -184,7 +200,7 @@ function listenToNavigation() {
     if (url !== lastUrl) {
       lastUrl = url;
       removeCommitsDisplay();
-      fetchCommits();
+      debouncedFetchCommits();
     }
   }).observe(document.querySelector("title"), {
     subtree: true,
@@ -193,19 +209,24 @@ function listenToNavigation() {
   });
 }
 
-// Initialiser l'extension
 function initExtension() {
-  // Vérifier si nous sommes sur une page de dépôt GitHub
   if (
     window.location.hostname === "github.com" &&
     window.location.pathname.split("/").length >= 3
   ) {
-    fetchCommits();
+    debouncedFetchCommits();
     initObserver();
     listenToNavigation();
   }
 }
 
-// Démarrer l'extension
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(initExtension, 100);
+});
+
+window.addEventListener("load", () => {
+  debouncedFetchCommits();
+});
+
 document.addEventListener("DOMContentLoaded", initExtension);
 window.addEventListener("load", initExtension);
