@@ -1,8 +1,24 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "LOGOUT") {
     removeCommitsDisplay();
+  } else if (message.type === "SETTINGS_UPDATED") {
+    fetchCommits();
   }
 });
+
+function applySettings(commitsContainer) {
+  chrome.storage.local.get(["theme", "fontSize"], (data) => {
+    if (data.theme === "dark") {
+      commitsContainer.classList.add("dark-theme");
+    } else {
+      commitsContainer.classList.remove("dark-theme");
+    }
+
+    if (data.fontSize) {
+      commitsContainer.style.fontSize = `${data.fontSize}px`;
+    }
+  });
+}
 
 function removeCommitsDisplay() {
   const container = document.querySelector(".octobranch-commits");
@@ -22,6 +38,8 @@ function displayCommits(commits) {
 
   const commitsContainer = document.createElement("div");
   commitsContainer.className = "octobranch-commits";
+
+  applySettings(commitsContainer);
 
   commitsContainer.innerHTML = `
     <div class="BorderGrid-row">
@@ -47,27 +65,31 @@ function displayCommits(commits) {
                 <span class="truncate-text">${branch.branch}</span>
               </div>
               
-              <a class="commit-message" href="${
-                branch.commit.html_url
-              }" title="${branch.commit.commit.message}">
-                ${branch.commit.commit.message}
-              </a>
-              
-              <div class="commit-meta">
-                <a class="commit-author" href="${
-                  branch.commit.author?.html_url || "#"
-                }" title="${branch.commit.commit.author.name}">
-                  <img class="avatar-user" src="${
-                    branch.commit.author?.avatar_url || "/api/placeholder/20/20"
-                  }" alt="${branch.commit.commit.author.name}">
-                  <span class="truncate-text">${
-                    branch.commit.commit.author.name
-                  }</span>
+              ${branch.commits
+                .map(
+                  (commit) => `
+                <a class="commit-message" href="${commit.html_url}" title="${
+                    commit.commit.message
+                  }">
+                  ${commit.commit.message}
                 </a>
-                <span>${timeSince(
-                  new Date(branch.commit.commit.author.date)
-                )}</span>
-              </div>
+                
+                <div class="commit-meta">
+                  <a class="commit-author" href="${
+                    commit.author?.html_url || "#"
+                  }" title="${commit.commit.author.name}">
+                    <img class="avatar-user" src="${
+                      commit.author?.avatar_url || "/api/placeholder/20/20"
+                    }" alt="${commit.commit.author.name}">
+                    <span class="truncate-text">${
+                      commit.commit.author.name
+                    }</span>
+                  </a>
+                  <span>${timeSince(new Date(commit.commit.author.date))}</span>
+                </div>
+              `
+                )
+                .join("")}
             </div>
           `
             )
@@ -130,8 +152,12 @@ async function fetchCommits() {
 
   try {
     isLoadingCommits = true;
-    const data = await chrome.storage.local.get("github_access_token");
+    const data = await chrome.storage.local.get([
+      "github_access_token",
+      "commitsPerBranch",
+    ]);
     const accessToken = data.github_access_token;
+    const commitsPerBranch = data.commitsPerBranch || 1;
 
     if (!accessToken) {
       isLoadingCommits = false;
@@ -144,7 +170,7 @@ async function fetchCommits() {
       const repo = repoUrl[2];
 
       const response = await fetch(
-        `https://octobranch-cb873ad14131.herokuapp.com/repo/${owner}/${repo}/commits?access_token=${accessToken}`
+        `https://octobranch-cb873ad14131.herokuapp.com/repo/${owner}/${repo}/commits?access_token=${accessToken}&per_page=${commitsPerBranch}`
       );
 
       if (!response.ok) {

@@ -48,21 +48,21 @@ function updateUI(isAuthenticated) {
   const loginButton = document.getElementById("login-button");
   const logoutButton = document.getElementById("logout-button");
   const status = document.getElementById("status");
-  const commitsContainer = document.getElementById("commits-container");
+  const settings = document.getElementById("settings");
 
   if (isAuthenticated) {
     loginButton.style.display = "none";
     logoutButton.style.display = "block";
     status.textContent = "Connecté";
     status.className = "status status-connected";
-    commitsContainer.style.display = "block";
-    loadCommits();
+    settings.style.display = "block";
+    loadSettings();
   } else {
     loginButton.style.display = "block";
     logoutButton.style.display = "none";
     status.textContent = "Déconnecté";
     status.className = "status status-disconnected";
-    commitsContainer.style.display = "none";
+    settings.style.display = "none";
   }
 }
 
@@ -79,6 +79,59 @@ function handleLogout() {
     });
   });
 }
+
+function loadSettings() {
+  chrome.storage.local.get(
+    ["commitsPerBranch", "theme", "fontSize"],
+    (data) => {
+      document.getElementById("commits-per-branch").value =
+        data.commitsPerBranch || 1;
+      document.getElementById("theme").value = data.theme || "light";
+      document.getElementById("font-size").value = data.fontSize || 14;
+    }
+  );
+}
+
+function saveSettings(event) {
+  event.preventDefault();
+
+  const commitsPerBranch = document.getElementById("commits-per-branch").value;
+  const theme = document.getElementById("theme").value;
+  const fontSize = document.getElementById("font-size").value;
+
+  chrome.storage.local.set(
+    {
+      commitsPerBranch,
+      theme,
+      fontSize,
+    },
+    () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0] && tabs[0].id) {
+          chrome.tabs
+            .sendMessage(tabs[0].id, { type: "SETTINGS_UPDATED" })
+            .catch((error) => console.log("Tab not ready yet"));
+        }
+      });
+    }
+  );
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  chrome.storage.local.get("github_access_token", (data) => {
+    updateUI(!!data.github_access_token);
+  });
+
+  document
+    .getElementById("login-button")
+    .addEventListener("click", handleLogin);
+  document
+    .getElementById("logout-button")
+    .addEventListener("click", handleLogout);
+  document
+    .getElementById("settings-form")
+    .addEventListener("submit", saveSettings);
+});
 
 async function loadCommits() {
   if (isFetching) return;

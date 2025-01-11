@@ -176,3 +176,21 @@
     background-color: var(--border-dark);
   }
 }
+
+.dark-theme {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-theme .branch-commit-item {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+.dark-theme .commit-message {
+  color: #a8d1ff;
+}
+
+.dark-theme .commit-author {
+  color: #ccc;
+}

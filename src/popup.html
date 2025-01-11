@@ -23,6 +23,59 @@
       <button id="logout-button" class="hidden">Se déconnecter</button>
     </div>
 
+    <div id="settings" class="mt-8 p-4 bg-gray-100 rounded-lg hidden">
+      <h2 class="text-lg font-semibold mb-4">Paramètres</h2>
+      <form id="settings-form">
+        <div class="mb-4">
+          <label
+            for="commits-per-branch"
+            class="block text-sm font-medium text-gray-700"
+            >Nombre de commits par branche</label
+          >
+          <input
+            type="number"
+            id="commits-per-branch"
+            name="commits-per-branch"
+            min="1"
+            max="10"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="theme" class="block text-sm font-medium text-gray-700"
+            >Thème</label
+          >
+          <select
+            id="theme"
+            name="theme"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          >
+            <option value="light">Clair</option>
+            <option value="dark">Sombre</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="font-size" class="block text-sm font-medium text-gray-700"
+            >Taille de la police</label
+          >
+          <input
+            type="number"
+            id="font-size"
+            name="font-size"
+            min="12"
+            max="24"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+        </div>
+        <button
+          type="submit"
+          class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          Enregistrer les paramètres
+        </button>
+      </form>
+    </div>
+
     <footer class="mt-auto text-center text-xs text-gray-500">
       &copy; 2025 OctoBranch
     </footer>
