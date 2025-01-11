@@ -144,7 +144,7 @@ async function fetchCommits() {
       const repo = repoUrl[2];
 
       const response = await fetch(
-        `https://octobranch-server.onrender.com/repo/${owner}/${repo}/commits?access_token=${accessToken}`
+        `https://octobranch-cb873ad14131.herokuapp.com//repo/${owner}/${repo}/commits?access_token=${accessToken}`
       );
 
       if (!response.ok) {

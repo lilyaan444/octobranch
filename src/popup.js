@@ -8,7 +8,7 @@ function handleLogin() {
   const top = (screen.height - height) / 2;
 
   authWindow = window.open(
-    "https://octobranch-server.onrender.com/auth/github",
+    "https://octobranch-cb873ad14131.herokuapp.com/auth/github",
     "GitHubAuth",
     `width=${width},height=${height},left=${left},top=${top}`
   );
@@ -17,7 +17,7 @@ function handleLogin() {
 }
 
 function handleAuthMessage(event) {
-  if (event.origin !== "https://octobranch-server.onrender.com") return;
+  if (event.origin !== "https://octobranch-cb873ad14131.herokuapp.com") return;
 
   if (event.data.type === "GITHUB_AUTH_SUCCESS" && event.data.token) {
     chrome.storage.local.set(
@@ -105,7 +105,7 @@ async function loadCommits() {
       const repo = pathParts[2];
 
       const response = await fetch(
-        `https://octobranch-server.onrender.com/repo/${owner}/${repo}/commits?access_token=${token}`,
+        `https://octobranch-cb873ad14131.herokuapp.com/repo/${owner}/${repo}/commits?access_token=${token}`,
         {
           method: "GET",
           headers: {
