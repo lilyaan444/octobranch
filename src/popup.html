@@ -5,81 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OctoBranch</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles/popup.css" />
   </head>
   <body>
-    <div class="header">
-      <h1>OctoBranch</h1>
-      <span id="status" class="status">Connecté à GitHub</span>
+    <div class="container">
+      <header class="header">
+        <h1>OctoBranch</h1>
+        <div class="status-container">
+          <span id="status" class="status">
+            <span class="status-dot"></span>
+            Connecté à GitHub
+          </span>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="actions-container">
+          <button id="login-button" class="btn btn-primary">
+            <svg
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+                fill="currentColor"
+              />
+            </svg>
+            Se connecter avec GitHub
+          </button>
+          <button id="logout-button" class="btn btn-danger hidden">
+            <svg
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Se déconnecter
+          </button>
+        </div>
+
+        <section id="settings" class="settings-panel">
+          <h2 class="settings-title">Paramètres</h2>
+          <form id="settings-form" class="settings-form">
+            <div class="form-group">
+              <label for="commits-per-branch" class="form-label">
+                <svg class="form-icon" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M15 3H7a2 2 0 00-2 2v14a2 2 0 002 2h8m4-9l3 3-3 3m-3-3h6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Nombre de commits par branche
+              </label>
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="commits-per-branch"
+                  name="commits-per-branch"
+                  min="1"
+                  max="10"
+                  class="form-input"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="theme" class="form-label">
+                <svg class="form-icon" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Thème
+              </label>
+              <div class="input-wrapper">
+                <select id="theme" name="theme" class="form-input">
+                  <option value="light">Clair</option>
+                  <option value="dark">Sombre</option>
+                  <option value="system">Système</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="font-size" class="form-label">
+                <svg class="form-icon" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M4 7V4h16v3M9 20h6M12 4v16"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Taille de la police
+              </label>
+              <div class="input-wrapper">
+                <input
+                  type="range"
+                  id="font-size"
+                  name="font-size"
+                  min="12"
+                  max="24"
+                  step="2"
+                  class="form-range"
+                />
+                <span class="range-value">16px</span>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-submit">
+              Enregistrer les paramètres
+            </button>
+          </form>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p class="footer-text">Version 1.0.0</p>
+        <p class="footer-copyright">&copy; 2025 OctoBranch</p>
+      </footer>
     </div>
 
-    <div class="flex flex-col items-center gap-4 mt-8">
-      <button id="login-button" class="transition-transform">
-        Se connecter avec GitHub
-      </button>
-      <button id="logout-button" class="hidden">Se déconnecter</button>
-    </div>
-
-    <div id="settings" class="mt-8 p-4 bg-gray-100 rounded-lg hidden">
-      <h2 class="text-lg font-semibold mb-4">Paramètres</h2>
-      <form id="settings-form">
-        <div class="mb-4">
-          <label
-            for="commits-per-branch"
-            class="block text-sm font-medium text-gray-700"
-            >Nombre de commits par branche</label
-          >
-          <input
-            type="number"
-            id="commits-per-branch"
-            name="commits-per-branch"
-            min="1"
-            max="10"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div class="mb-4">
-          <label for="theme" class="block text-sm font-medium text-gray-700"
-            >Thème</label
-          >
-          <select
-            id="theme"
-            name="theme"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          >
-            <option value="light">Clair</option>
-            <option value="dark">Sombre</option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label for="font-size" class="block text-sm font-medium text-gray-700"
-            >Taille de la police</label
-          >
-          <input
-            type="number"
-            id="font-size"
-            name="font-size"
-            min="12"
-            max="24"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
-        <button
-          type="submit"
-          class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Enregistrer les paramètres
-        </button>
-      </form>
-    </div>
-
-    <footer class="mt-auto text-center text-xs text-gray-500">
-      &copy; 2025 OctoBranch
-    </footer>
-
+    <div id="notification" class="notification" role="alert"></div>
     <script src="popup.js"></script>
   </body>
 </html>

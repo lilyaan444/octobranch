@@ -1,5 +1,12 @@
-let authWindow = null;
-let isFetching = false;
+function showNotification(message, type = "info", duration = 3000) {
+  const notification = document.getElementById("notification");
+  notification.textContent = message;
+  notification.className = `notification ${type} show`;
+
+  setTimeout(() => {
+    notification.classList.remove("show");
+  }, duration);
+}
 
 function handleLogin() {
   const width = 800;
@@ -26,6 +33,7 @@ function handleAuthMessage(event) {
       },
       () => {
         updateUI(true);
+        showNotification("Connexion réussie !", "success");
 
         chrome.tabs.query(
           { active: true, currentWindow: true },
@@ -42,6 +50,60 @@ function handleAuthMessage(event) {
 
     window.removeEventListener("message", handleAuthMessage);
   }
+}
+
+function handleLogout() {
+  chrome.storage.local.remove("github_access_token", () => {
+    updateUI(false);
+    showNotification("Déconnexion réussie.", "success");
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (tabs[0] && tabs[0].id) {
+        chrome.tabs
+          .sendMessage(tabs[0].id, { type: "LOGOUT" })
+          .catch((error) => console.log("Tab not ready yet"));
+      }
+    });
+  });
+}
+
+function saveSettings(event) {
+  event.preventDefault();
+
+  const commitsPerBranch = document.getElementById("commits-per-branch").value;
+  const theme = document.getElementById("theme").value;
+  const fontSize = document.getElementById("font-size").value;
+
+  chrome.storage.local.set(
+    {
+      commitsPerBranch,
+      theme,
+      fontSize,
+    },
+    () => {
+      showNotification("Paramètres enregistrés avec succès.", "success");
+
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0] && tabs[0].id) {
+          chrome.tabs
+            .sendMessage(tabs[0].id, { type: "SETTINGS_UPDATED" })
+            .catch((error) => console.log("Tab not ready yet"));
+        }
+      });
+    }
+  );
+}
+
+function loadSettings() {
+  chrome.storage.local.get(
+    ["commitsPerBranch", "theme", "fontSize"],
+    (data) => {
+      document.getElementById("commits-per-branch").value =
+        data.commitsPerBranch || 1;
+      document.getElementById("theme").value = data.theme || "light";
+      document.getElementById("font-size").value = data.fontSize || 14;
+    }
+  );
 }
 
 function updateUI(isAuthenticated) {
@@ -64,57 +126,6 @@ function updateUI(isAuthenticated) {
     status.className = "status status-disconnected";
     settings.style.display = "none";
   }
-}
-
-function handleLogout() {
-  chrome.storage.local.remove("github_access_token", () => {
-    updateUI(false);
-
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      if (tabs[0] && tabs[0].id) {
-        chrome.tabs
-          .sendMessage(tabs[0].id, { type: "LOGOUT" })
-          .catch((error) => console.log("Tab not ready yet"));
-      }
-    });
-  });
-}
-
-function loadSettings() {
-  chrome.storage.local.get(
-    ["commitsPerBranch", "theme", "fontSize"],
-    (data) => {
-      document.getElementById("commits-per-branch").value =
-        data.commitsPerBranch || 1;
-      document.getElementById("theme").value = data.theme || "light";
-      document.getElementById("font-size").value = data.fontSize || 14;
-    }
-  );
-}
-
-function saveSettings(event) {
-  event.preventDefault();
-
-  const commitsPerBranch = document.getElementById("commits-per-branch").value;
-  const theme = document.getElementById("theme").value;
-  const fontSize = document.getElementById("font-size").value;
-
-  chrome.storage.local.set(
-    {
-      commitsPerBranch,
-      theme,
-      fontSize,
-    },
-    () => {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        if (tabs[0] && tabs[0].id) {
-          chrome.tabs
-            .sendMessage(tabs[0].id, { type: "SETTINGS_UPDATED" })
-            .catch((error) => console.log("Tab not ready yet"));
-        }
-      });
-    }
-  );
 }
 
 document.addEventListener("DOMContentLoaded", () => {
